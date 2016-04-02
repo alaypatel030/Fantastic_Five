@@ -9,8 +9,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -31,19 +29,13 @@ public class GUIAdmin extends JPanel
 
 		// Button & Logic for View Courses
 		JButton btnView = new JButton("View Courses");
-		btnView.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnView.addMouseListener(new MouseAdapter()
+		btnView.addActionListener(new ActionListener()
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			public void actionPerformed(ActionEvent e)
 			{
 				StudentRegistrationMain.replaceMainWindowContents(new GUIViewCourses());
 			}
 		});
-
 		btnView.setBounds(233, 180, 156, 23);
 		add(btnView);
 
@@ -155,5 +147,6 @@ public class GUIAdmin extends JPanel
 		});
 		btnNewButton_5.setBounds(415, 282, 156, 23);
 		add(btnNewButton_5);
+		
 	}
 }

@@ -14,8 +14,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.fantastic_five.GUI.GUILogin;
-import com.github.fantastic_five.Logic.Course.Day;
 import com.github.fantastic_five.Logic.Course;
+import com.github.fantastic_five.Logic.Course.Day;
 import com.github.fantastic_five.Logic.CourseLib;
 import com.github.fantastic_five.Logic.UserProfile;
 import com.github.fantastic_five.Logic.UserProfileDatabase;
@@ -146,6 +146,7 @@ public class StudentRegistrationMain
 	{
 		mainWindow.getContentPane().removeAll();
 		mainWindow.getContentPane().add(newComponent);
+		mainWindow.getContentPane().requestFocusInWindow();
 		mainWindow.pack();
 	}
 }

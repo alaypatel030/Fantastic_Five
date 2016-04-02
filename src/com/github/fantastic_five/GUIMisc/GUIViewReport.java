@@ -6,8 +6,8 @@ package com.github.fantastic_five.GUIMisc;
  */
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.github.fantastic_five.StudentRegistrationMain;
+import com.github.fantastic_five.GUIAdministrator.GUIAdmin;
 
 @SuppressWarnings("serial")
 public class GUIViewReport extends JPanel
@@ -60,12 +61,11 @@ public class GUIViewReport extends JPanel
 		scrollPane.setViewportView(table);
 
 		JButton btnBack = new JButton("Back");
-		btnBack.addMouseListener(new MouseAdapter()
+		btnBack.addActionListener(new ActionListener()
 		{
-			@Override
-			public void mouseClicked(MouseEvent arg0)
+			public void actionPerformed(ActionEvent e)
 			{
-				StudentRegistrationMain.replaceMainWindowContents(previousPanel);
+				StudentRegistrationMain.replaceMainWindowContents(new GUIAdmin());
 			}
 		});
 		btnBack.setBounds(10, 386, 128, 23);

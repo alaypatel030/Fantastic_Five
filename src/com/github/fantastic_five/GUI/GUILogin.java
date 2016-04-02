@@ -193,5 +193,6 @@ public class GUILogin extends JPanel
 		});
 		// Add button to panel
 		add(btnGuest);
+		
 	}
 }

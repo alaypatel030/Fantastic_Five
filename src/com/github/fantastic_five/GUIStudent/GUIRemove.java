@@ -7,14 +7,12 @@ package com.github.fantastic_five.GUIStudent;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class GUIRemove
 {
@@ -73,10 +71,6 @@ public class GUIRemove
 		frame.getContentPane().add(btnYes);
 
 		JButton btnNo = new JButton("No");
-		btnNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnNo.addMouseListener(new MouseAdapter()
 		{
 			@Override

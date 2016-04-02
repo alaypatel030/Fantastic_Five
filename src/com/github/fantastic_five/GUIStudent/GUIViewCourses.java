@@ -7,8 +7,8 @@ package com.github.fantastic_five.GUIStudent;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -68,14 +68,13 @@ public class GUIViewCourses extends JPanel
 		 * Adds a back button.
 		 */
 		JButton btnBack = new JButton("Back");
-		btnBack.addMouseListener(new MouseAdapter()
+		btnBack.addActionListener(new ActionListener()
 		{
-			@Override
-			public void mouseClicked(MouseEvent arg0)
+			public void actionPerformed(ActionEvent e)
 			{
 				StudentRegistrationMain.replaceMainWindowContents(new GUIStudent());
-			}// end of mouseClicked
-		});// end of mouseListener
+			}
+		});
 		btnBack.setBounds(10, 386, 128, 23);
 		add(btnBack);
 

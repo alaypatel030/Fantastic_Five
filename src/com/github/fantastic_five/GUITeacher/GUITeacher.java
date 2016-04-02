@@ -8,8 +8,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,10 +32,9 @@ public class GUITeacher extends JPanel
 
 		// Button & Logic for View Course
 		JButton btnView = new JButton("View Course");
-		btnView.addMouseListener(new MouseAdapter()
+		btnView.addActionListener(new ActionListener()
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			public void actionPerformed(ActionEvent arg0)
 			{
 				StudentRegistrationMain.replaceMainWindowContents(new GUIViewCourse());
 			}
@@ -48,10 +45,9 @@ public class GUITeacher extends JPanel
 
 		// Button & logic for removing courses
 		JButton btnAddremoveCourse = new JButton("Add / Remove Course");
-		btnAddremoveCourse.addMouseListener(new MouseAdapter()
+		btnAddremoveCourse.addActionListener(new ActionListener()
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			public void actionPerformed(ActionEvent arg0)
 			{
 				StudentRegistrationMain.replaceMainWindowContents(new GUIAddRemoveClass());
 			}
