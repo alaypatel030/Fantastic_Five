@@ -11,10 +11,10 @@ public class CourseManager
 	private TreeSet<Course> courseOfferings;
 	private Set<Connector> network;
 
-	public static final int COURSE_INSTRUCTOR_RELATIONSHIP = Connector.COURSE_INSTRUCTOR_RELATIONSHIP;
-	public static final int COURSE_LEARNER_RELATIONSHIP = Connector.COURSE_LEARNER_RELATIONSHIP;
+	private static final int COURSE_INSTRUCTOR_RELATIONSHIP = Connector.COURSE_INSTRUCTOR_RELATIONSHIP;
+	private static final int COURSE_LEARNER_RELATIONSHIP = Connector.COURSE_LEARNER_RELATIONSHIP;
 
-	public static final int MAX_COURSES_PER_LEARNER = 5;
+	private static final int MAX_COURSES_PER_LEARNER = 5;
 
 	/**
 	 * Constructs a new instance of CourseManager
@@ -33,6 +33,16 @@ public class CourseManager
 		network = new HashSet<>();
 	}
 
+	/**
+	 * Return a treeSet containing all of the courses being offered, ordered by CRN
+	 * @return The treeSet of all courses being offered, ordered by CRN
+	 */
+	public TreeSet<Course> copyCourseOfferings()
+	{
+		TreeSet<Course> rVal = (TreeSet<Course>)courseOfferings.clone();
+		return rVal;
+	}
+	
 	/**
 	 * Checks the catalog to see if it contains a course with a specified CRN
 	 * 
@@ -55,21 +65,22 @@ public class CourseManager
 	/**
 	 * Remove a specified course from the catalog if the catalog contains a course with a CRN which is identical to the one specified
 	 * 
-	 * @param crn The CRN of the course to be removed
+	 * @param crn
+	 *            The CRN of the course to be removed
 	 * @return true iff the course is successfully removed from the catalog
 	 */
 	public boolean removeCourse(int crn)
 	{
-		boolean rVal;
+		boolean rVal = false;
 
 		Course dummy = dummyCourse(crn);
 
 		if (courseOfferings.contains(dummy))
 		{
 			rVal = true;
-			
+
 			courseOfferings.remove(dummy);
-			
+
 			network.removeIf(new Predicate<Connector>()
 			{
 				public boolean test(Connector connector)
@@ -78,11 +89,7 @@ public class CourseManager
 				}
 			});
 		}
-		else
-		{
-			rVal =  false;
-		}
-		
+
 		return rVal;
 	}
 
@@ -95,13 +102,9 @@ public class CourseManager
 	 */
 	public boolean addCourse(Course addition)
 	{
-		boolean rVal;
+		boolean rVal = false;
 
-		if (courseOfferings.contains(addition))
-		{
-			rVal = false;
-		}
-		else
+		if (!courseOfferings.contains(addition))
 		{
 			rVal = true;
 			courseOfferings.add(addition);
@@ -135,25 +138,27 @@ public class CourseManager
 
 		return rVal;
 	}
-	
+
 	/**
 	 * Returns a set of courses representing the course schedule of a specified learner
-	 * @param learner The UserProfile whose course schedule is being viewed. Its permLevel must be equal to STUDENT or TA
+	 * 
+	 * @param learner
+	 *            The UserProfile whose course schedule is being viewed. Its permLevel must be equal to STUDENT or TA
 	 * @return A set of courses representing the course schedule of a specified learner, or null if learner's permLevel is invalid
 	 */
 	public Set<Course> getCoursesWithLearner(UserProfile learner)
 	{
 		Set<Course> rVal;
-		
-		if((learner.getPermLevel() == UserProfile.STUDENT) || (learner.getPermLevel() == UserProfile.TA))
+
+		if ((learner.getPermLevel() == UserProfile.STUDENT) || (learner.getPermLevel() == UserProfile.TA))
 		{
 			rVal = new HashSet<Course>();
-			
-			for(Connector e: network)
+
+			for (Connector e : network)
 			{
-				if(e.relationship == COURSE_LEARNER_RELATIONSHIP)
+				if (e.relationship == COURSE_LEARNER_RELATIONSHIP)
 				{
-					if(e.person.equals(learner))
+					if (e.person.equals(learner))
 					{
 						rVal.add(getCourse(e.courseCRN));
 					}
@@ -164,28 +169,64 @@ public class CourseManager
 		{
 			rVal = null;
 		}
-			
+
 		return rVal;
 	}
-	
+
+	/**
+	 * Returns a set of courses representing the teaching schedule of a specified instructor
+	 * 
+	 * @param instructor
+	 *            The UserProfile whose teaching schedule is being viewed. Its permLevel must be greater than or equal to TA and less than or equal to ADMIN
+	 * @return A set of courses representing the teaching schedule of a specified instructor, or null if instructor's permLevel is invalid
+	 */
+	public Set<Course> getCoursesWithInstructor(UserProfile instructor)
+	{
+		Set<Course> rVal;
+
+		if ((instructor.getPermLevel() >= UserProfile.TA) && (instructor.getPermLevel() <= UserProfile.ADMIN))
+		{
+			rVal = new HashSet<Course>();
+
+			for (Connector e : network)
+			{
+				if (e.relationship == COURSE_INSTRUCTOR_RELATIONSHIP)
+				{
+					if (e.person.equals(instructor))
+					{
+						rVal.add(getCourse(e.courseCRN));
+					}
+				}
+			}
+		}
+		else
+		{
+			rVal = null;
+		}
+
+		return rVal;
+	}
+
 	/**
 	 * Returns a set of UserProfiles representing the people who are enrolled in the course with a specified CRN
-	 * @param courseCRN The CRN of the course that is being looked at
+	 * 
+	 * @param courseCRN
+	 *            The CRN of the course that is being looked at
 	 * @return A set of UserProfiles representing the people who are enrolled in the course with a specified CRN, or null iff (!this.containsCourse(courseCRN))
 	 */
 	public Set<UserProfile> getLearnersWithCourse(int courseCRN)
 	{
 		Set<UserProfile> rVal;
-		
-		if(containsCourse(courseCRN))
+
+		if (containsCourse(courseCRN))
 		{
 			rVal = new HashSet<UserProfile>();
-			
-			for(Connector e: network)
+
+			for (Connector e : network)
 			{
-				if(e.relationship == COURSE_LEARNER_RELATIONSHIP)
+				if (e.relationship == COURSE_LEARNER_RELATIONSHIP)
 				{
-					if(e.courseCRN == courseCRN)
+					if (e.courseCRN == courseCRN)
 					{
 						rVal.add(e.person);
 					}
@@ -196,32 +237,69 @@ public class CourseManager
 		{
 			rVal = null;
 		}
-			
+
 		return rVal;
 	}
-	
+
+	/**
+	 * Returns a set of UserProfiles representing the people who are teaching the course with a specified CRN
+	 * 
+	 * @param courseCRN
+	 *            The CRN of the course that is being looked at
+	 * @return A set of UserProfiles representing the people who are teaching the course with a specified CRN, or null iff (!this.containsCourse(courseCRN))
+	 */
+	public Set<UserProfile> getInstructorsWithCourse(int courseCRN)
+	{
+		Set<UserProfile> rVal;
+
+		if (containsCourse(courseCRN))
+		{
+			rVal = new HashSet<UserProfile>();
+
+			for (Connector e : network)
+			{
+				if (e.relationship == COURSE_INSTRUCTOR_RELATIONSHIP)
+				{
+					if (e.courseCRN == courseCRN)
+					{
+						rVal.add(e.person);
+					}
+				}
+			}
+		}
+		else
+		{
+			rVal = null;
+		}
+
+		return rVal;
+	}
+
 	/**
 	 * Attempts to enroll a specified person in a course with a specified crn. Fails if the learner's permLevel is not STUDENT or TA, no courses with the CRN exist in the catalog, the person is already enrolled in the maximum number of classes allowed, or the desired course is full.
-	 * @param learner The person who is being enrolled
-	 * @param courseCRN The crn of the course which is being enrolled in
+	 * 
+	 * @param learner
+	 *            The person who is being enrolled
+	 * @param courseCRN
+	 *            The crn of the course which is being enrolled in
 	 * @return true iff the learner is successfully enrolled in the course
 	 */
 	public boolean addLearnerToCourse(UserProfile learner, int courseCRN)
 	{
 		boolean rVal = false;
-		if((learner.getPermLevel() == UserProfile.STUDENT) || (learner.getPermLevel() == UserProfile.TA))
+		if ((learner.getPermLevel() == UserProfile.STUDENT) || (learner.getPermLevel() == UserProfile.TA))
 		{
-			if(containsCourse(courseCRN))
+			if (containsCourse(courseCRN))
 			{
 				Course course = getCourse(courseCRN);
-				
+
 				Connector connector = new Connector(COURSE_LEARNER_RELATIONSHIP, courseCRN, learner);
-				if(!network.contains(connector) && !network.contains(new Connector(COURSE_INSTRUCTOR_RELATIONSHIP, courseCRN, learner)))
+				if (!network.contains(connector) && !network.contains(new Connector(COURSE_INSTRUCTOR_RELATIONSHIP, courseCRN, learner)))
 				{
 					Set<Course> coursesWithLearner = getCoursesWithLearner(learner);
 					Set<UserProfile> learnersWithCourse = getLearnersWithCourse(courseCRN);
-					
-					if((coursesWithLearner.size() < MAX_COURSES_PER_LEARNER) && (learnersWithCourse.size() < course.getStudentCap()))
+
+					if ((coursesWithLearner.size() < MAX_COURSES_PER_LEARNER) && (learnersWithCourse.size() < course.getStudentCap()))
 					{
 						rVal = true;
 						network.add(connector);
@@ -229,94 +307,125 @@ public class CourseManager
 				}
 			}
 		}
-		
-		if(rVal)
+
+		if (rVal)
 		{
-			//update network file
+			// update network file
 		}
 		return rVal;
 	}
-	
+
 	/**
-	 *  Attempts to remove a specified person in a course with a specified crn.
-	 * @param learner The person being removed
-	 * @param courseCRN The course the person is being dropped from
+	 * Attempts to remove a specified person in a course with a specified crn.
+	 * 
+	 * @param learner
+	 *            The person being removed
+	 * @param courseCRN
+	 *            The course the person is being dropped from
 	 * @return true iff the learner was present and then removed from the course
 	 */
 	public boolean removeLearnerFromCourse(UserProfile learner, int courseCRN)
 	{
 		boolean rVal = false;
-		
+
 		Connector connector = new Connector(COURSE_LEARNER_RELATIONSHIP, courseCRN, learner);
-		if(network.contains(connector))
+		if (network.contains(connector))
 		{
 			rVal = true;
 			network.remove(connector);
 		}
-		
-		if(rVal)
+
+		if (rVal)
 		{
-			//update network file
+			// update network file
+		}
+		return rVal;
+	}
+
+	/**
+	 * Attempts to register a specified person to teach a course with a specified crn. Fails if the instructors's permLevel is not TA, TEACHER, or ADMIN, or no courses with the CRN exist in the catalog.
+	 * 
+	 * @param instructor
+	 *            The person who is being registered to teach
+	 * @param courseCRN
+	 *            The crn of the course which is being enrolled in
+	 * @return true iff the instructor is successfully signed up for the course
+	 */
+	public boolean addInstructorToCourse(UserProfile instructor, int courseCRN)
+	{
+		boolean rVal = false;
+		if ((instructor.getPermLevel() >= UserProfile.TA) && (instructor.getPermLevel() <= UserProfile.ADMIN))
+		{
+			if (!containsCourse(courseCRN))
+			{
+				Connector connector = new Connector(COURSE_INSTRUCTOR_RELATIONSHIP, courseCRN, instructor);
+
+				if (!network.contains(connector) && !network.contains(new Connector(COURSE_LEARNER_RELATIONSHIP, courseCRN, instructor)))
+				{
+					rVal = true;
+					network.add(connector);
+				}
+
+			}
+		}
+
+		if (rVal)
+		{
+			//update network data file
+		}
+		return rVal;
+	}
+
+	/**
+	 * Attempts to remove a specified person from teaching a course with a specified crn.
+	 * 
+	 * @param learner
+	 *            The person being removed
+	 * @param courseCRN
+	 *            The course the person is being no longer teach
+	 * @return true iff the instructor was successfully removed from the course
+	 */
+	public boolean removeInstructorFromCourse(UserProfile instructor, int courseCRN)
+	{
+		boolean rVal = false;
+
+		Connector connector = new Connector(COURSE_INSTRUCTOR_RELATIONSHIP, courseCRN, instructor);
+		if (network.contains(connector))
+		{
+			rVal = true;
+			network.remove(connector);
+		}
+
+		if (rVal)
+		{
+			// update network file
 		}
 		return rVal;
 	}
 	
-//	public boolean addLearnerToCourse(UserProfile learner, int courseCRN)
-//	{
-//		boolean rVal;
-//		if((learner.getPermLevel() == UserProfile.STUDENT) || (learner.getPermLevel() == UserProfile.TA))
-//		{
-//			if (containsCourse(courseCRN))
-//			{
-//				Course course = getCourse(courseCRN);
-//				
-//				int learnersEnrolledInCourse = 0;
-//				int coursesLearnerIsTaking = 0;
-//				
-//				for(Connector e: network)
-//				{
-//					if(e.relationship == COURSE_LEARNER_RELATIONSHIP)
-//					{
-//						if (e.courseCRN == courseCRN)
-//						{
-//							learnersEnrolledInCourse +=1;
-//							if(e.person.equals(learner))
-//							{
-//								rVal = false;
-//								break;
-//							}
-//						}
-//						else if(e.person.equals(learner))
-//						{
-//							coursesLearnerIsTaking += 1;
-//						}
-//					}
-//				}
-//				
-//				if((learnersEnrolledInCourse < course.getStudentCap()) && 
-//						(coursesLearnerIsTaking < MAX_COURSES_PER_LEARNER))
-//				{
-//					rVal = true;
-//					network.add(new Connector(COURSE_LEARNER_RELATIONSHIP ,courseCRN, learner));
-//				}
-//				else
-//				{
-//					rVal = false;
-//				}
-//			}
-//			else
-//			{
-//				rVal = false;
-//			}
-//		}
-//		else
-//		{
-//			rVal = false;
-//		}
-//		
-//		return rVal;
-//	}
-
+	/**
+	 * Generates an integer representing the lowest integer not currently used as a crn in the catalog, within specified bounds 
+	 * @param min The lower bound for the return value; must be lower than max
+	 * @param max The upper bound for the return value; must be higher than min
+	 * @return A crn which is not currently in use, or max+1 if every value in the bounded region is already in use
+	 */
+	public int generateNewCRN(int min, int max)
+	{
+		if(max >= min)
+		{
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+		
+		int rVal = min;
+		
+		while(containsCourse(rVal) && (rVal <= max))
+		{
+			rVal += 1;
+		}
+		
+		return rVal;
+	}
+	
 	private Course dummyCourse(int crn)
 	{
 		Course rVal = new Course(null, null, crn, 0, null, 0, 0, 0, 1);
@@ -338,14 +447,14 @@ public class CourseManager
 			this.courseCRN = courseCRN;
 			this.person = person;
 		}
-		
+
 		public boolean equals(Object o)
 		{
 			boolean rVal;
-			if(o instanceof Connector)
+			if (o instanceof Connector)
 			{
-				Connector other = (Connector)o;
-				
+				Connector other = (Connector) o;
+
 				rVal = (this.relationship == other.relationship);
 				rVal = (this.courseCRN == other.courseCRN) && rVal;
 				rVal = (this.person.equals(other.person)) && rVal;
