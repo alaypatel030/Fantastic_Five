@@ -1,18 +1,16 @@
 package com.github.fantastic_five.GUITeacher;
 
 /**
+ /**
  * @author Christian Phillips
  * Group 5 
  */
-
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,28 +22,23 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.github.fantastic_five.StudentRegistrationMain;
-import com.github.fantastic_five.GUI.GUILogin;
+import com.github.fantastic_five.GUIMisc.GUILogStatus;
 
 @SuppressWarnings("serial")
 public class GUIViewSchedule extends JPanel
 {
-	/**
-	 * This GUI that shall display teacher's individual schedule of courses he/she is teaching
-	 */
+	//This GUI that shall display teacher's individual schedule of courses he/she is teaching
 	public GUIViewSchedule()
 	{
-		/**
-		 * adds a ScrollPane
-		 */
+		// Adds a ScrollPane
 		setBounds(0, 0, 618, 434);
 		setLayout(null);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 60, 587, 107);
 		add(scrollPane);
 
-		/**
-		 * adds a table which will display list of courses that user have chosen
-		 */
+		
+		// Adds a table which will display list of courses that user have chose
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, }, new String[] { "CRN", "Class", "Capacity", "Remaining", "Time", "Day", "Teacher", "Room" })
 		{
@@ -56,11 +49,8 @@ public class GUIViewSchedule extends JPanel
 			}
 		});
 		scrollPane.setViewportView(table);
-		
-		
-		/**
-		 * Button & logic for back button
-		 */
+				
+		// Button & logic for back button
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener()
 		{
@@ -73,9 +63,7 @@ public class GUIViewSchedule extends JPanel
 		btnBack.setBounds(10, 386, 128, 23);
 		add(btnBack);
 
-		/**
-		 * Button & Logic for print button
-		 */
+		// Button & Logic for print button
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener()
 		{
@@ -87,23 +75,17 @@ public class GUIViewSchedule extends JPanel
 		btnPrint.setBounds(498, 386, 99, 23);
 		add(btnPrint);
 		
-		/**
-		 * adds a scrollPane
-		 */
+	 	// Adds a scrollPane
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 178, 587, 197);
 		add(scrollPane_1);
 
-		/**
-		 * adds a login GUI
-		 */
-		JPanel loginPanel = new GUILogin();
+		// Adds a login GUI
+		JPanel loginPanel = new GUILogStatus();
 		loginPanel.setBounds(0, 0, 618, 24);
 		add(loginPanel);
 
-		/**
-		 * adds a JLabel named "View Schedule"
-		 */
+		// Adds a JLabel named "View Schedule"
 		JLabel lblCourseRemoval = new JLabel("View Schedule");
 		lblCourseRemoval.setForeground(Color.GRAY);
 		lblCourseRemoval.setFont(new Font("Verdana", Font.BOLD, 16));
