@@ -1,5 +1,4 @@
-/**
- * @author Christian Phillips
+* @author Christian Phillips
  * Group 5 
  */
 
@@ -21,7 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.github.fantastic_five.StudentRegistrationMain;
-import com.github.fantastic_five.GUIMisc.GUILoggedIn;
+import com.github.fantastic_five.GUI.GUILogin;
 
 @SuppressWarnings("serial")
 public class GUIViewSchedule extends JPanel
@@ -51,7 +50,6 @@ public class GUIViewSchedule extends JPanel
 		 * Button & logic for back button
 		 */
 		JButton btnBack = new JButton("Back");
-		btnBack.setBounds(10, 386, 128, 23);
 		btnBack.addActionListener(new ActionListener()
 		{
 			@Override
@@ -60,28 +58,20 @@ public class GUIViewSchedule extends JPanel
 				StudentRegistrationMain.replaceMainWindowContents(new GUITeacher());
 			}
 		});
-		
-		btnBack.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent arg0)
-			{
-				StudentRegistrationMain.replaceMainWindowContents(new GUITeacher());
-			}// end of mouseClicked
-		});// end of MouseListener
+		btnBack.setBounds(10, 386, 128, 23);
 		add(btnBack);
 
 		/**
 		 * Button & Logic for print button
 		 */
 		JButton btnPrint = new JButton("Print");
-		btnPrint.setBounds(498, 386, 99, 23);
 		btnPrint.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 			}// end of actionPerformed
 		});// end of actionListener
+		btnPrint.setBounds(498, 386, 99, 23);
 		add(btnPrint);
 
 		/**
@@ -94,7 +84,7 @@ public class GUIViewSchedule extends JPanel
 		/**
 		 * adds a login GUI
 		 */
-		JPanel loginPanel = new GUILoggedIn();
+		JPanel loginPanel = new GUILogin();
 		loginPanel.setBounds(0, 0, 618, 24);
 		add(loginPanel);
 
