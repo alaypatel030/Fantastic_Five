@@ -1,4 +1,4 @@
-ackage com.github.fantastic_five.GUITeacher;
+package com.github.fantastic_five.GUITeacher;
 
 /**
  * @author Christian Phillips
@@ -81,6 +81,7 @@ public class GUITeacher extends JPanel
 		JButton btnViewSchedule = new JButton("View Schedule");
 		btnViewSchedule.addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				StudentRegistrationMain.replaceMainWindowContents(new GUIViewSchedule());
@@ -88,7 +89,27 @@ public class GUITeacher extends JPanel
 		});
 		btnViewSchedule.setBounds(178, 254, 243, 23);
 		add(btnViewSchedule);
-
+		
+		// Button for viewing students currently enrolled in classes you are teaching
+		JButton btnViewStudents = new JButton("View Students");
+		btnViewStudents.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				StudentRegistrationMain.replaceMainWindowContents(new GUIViewStudents());;
+			}
+		});
+		
+		btnViewStudents.aaddMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				StudentRegistrationMain.replaceMainWindowContents(new GUIViewStudents());;
+			}
+		});
+		
 		// Panel label
 		JLabel lblTeacher = new JLabel("Teacher");
 		lblTeacher.setBounds(232, 78, 46, 14);
