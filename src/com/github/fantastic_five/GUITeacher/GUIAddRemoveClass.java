@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.github.fantastic_five.StudentRegistrationMain;
-import com.github.fantastic_five.GUIMisc.GUILoggedIn;
+import com.github.fantastic_five.GUI.GUILogin;
 import com.github.fantastic_five.GUIStudent.GUIRemove;
 import javax.swing.JButton;
 
@@ -78,7 +78,6 @@ public class GUIAddRemoveClass extends JPanel
 
 		// adds a back button
 		btnBack = new JButton("Back");
-		btnBack.setBounds(41, 389, 128, 23);
 		btnBack.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -86,14 +85,7 @@ public class GUIAddRemoveClass extends JPanel
 				StudentRegistrationMain.replaceMainWindowContents(new GUITeacher());
 			}
 		});
-		btnBack.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				StudentRegistrationMain.replaceMainWindowContents(new GUITeacher());
-			}
-		});
+		btnBack.setBounds(41, 389, 128, 23);
 		add(btnBack);
 
 		// adds a label named "Search By"
@@ -127,7 +119,7 @@ public class GUIAddRemoveClass extends JPanel
 		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, }, new String[] { "CRN", "Class", "Capacity", "Remaining", "Time", "Day", "Teacher", "Room" }));
 		scrollPane.setViewportView(table);
 
-		JPanel loginPanel = new GUILoggedIn();
+		JPanel loginPanel = new GUILogin();
 		loginPanel.setBounds(0, 0, 618, 24);
 		add(loginPanel);
 
