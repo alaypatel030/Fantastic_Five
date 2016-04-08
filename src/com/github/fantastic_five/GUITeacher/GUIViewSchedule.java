@@ -1,17 +1,21 @@
-* @author Christian Phillips
+package com.github.fantastic_five.GUITeacher;
+
+/**
+ * @author Christian Phillips
  * Group 5 
  */
 
-package com.github.fantastic_five.GUITeacher;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,7 +30,7 @@ import com.github.fantastic_five.GUI.GUILogin;
 public class GUIViewSchedule extends JPanel
 {
 	/**
-	 * This GUI that shall display student's individual schedule of courses that he/she has chosen
+	 * This GUI that shall display teacher's individual schedule of courses he/she is teaching
 	 */
 	public GUIViewSchedule()
 	{
@@ -40,12 +44,20 @@ public class GUIViewSchedule extends JPanel
 		add(scrollPane);
 
 		/**
-		 * adds a table which would displays list of courses that user have chosen
+		 * adds a table which will display list of courses that user have chosen
 		 */
 		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, }, new String[] { "CRN", "Class", "Capacity", "Remaining", "Time", "Day", "Teacher", "Room" }));
+		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, }, new String[] { "CRN", "Class", "Capacity", "Remaining", "Time", "Day", "Teacher", "Room" })
+		{
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;
+			}
+		});
 		scrollPane.setViewportView(table);
-
+		
+		
 		/**
 		 * Button & logic for back button
 		 */
@@ -69,11 +81,12 @@ public class GUIViewSchedule extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				createPrintWindow();
 			}// end of actionPerformed
 		});// end of actionListener
 		btnPrint.setBounds(498, 386, 99, 23);
 		add(btnPrint);
-
+		
 		/**
 		 * adds a scrollPane
 		 */
@@ -99,4 +112,27 @@ public class GUIViewSchedule extends JPanel
 		add(lblCourseRemoval);
 
 	}// end of GUIViewSchedule()
+	
+	
+	
+	// Testing Print window
+	public void createPrintWindow()
+	{
+		// Makes a new window
+		JFrame printView = new JFrame("Print Preview");
+		// Finds a starting point for it to be put at
+		Point startingLoc = StudentRegistrationMain.mainWindow.getLocation();
+		startingLoc.translate(40, 20);
+
+		// Basic pop-up window initialization
+		printView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		printView.setPreferredSize(StudentRegistrationMain.mainWindowDimension);
+		printView.setResizable(false);
+		printView.pack();
+		printView.setVisible(true);
+		printView.setLocation(startingLoc);
+		printView.getContentPane().add(new GUIPrint());
+		printView.pack();
+	}
+	
 }// end of JPanel extension of GUIViewSchedule
