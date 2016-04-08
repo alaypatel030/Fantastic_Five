@@ -25,19 +25,14 @@ import com.github.fantastic_five.GUIMisc.GUILogStatus;
 @SuppressWarnings("serial")
 public class GUIAddCourse extends JPanel
 {
-	/**
-	 * private instant variables.
-	 */
+	// private instant variables.
 	private JTextField textField;
 	private JButton btnAddCourse;
 	private JButton btnBack;
 	private JLabel lblCrn;
 	private JTable table;
 
-	/**
-	 * This GUI class displays the panel for adding and removing courses that the teacher is teaching. Here teacher can search course by CRN that he/she wants to add or remove, and would allow them to do so.
-	 *
-	 */
+	// This GUI class displays the panel for adding and removing courses that the teacher is teaching. Here teacher can search course by CRN that he/she wants to add or remove, and would allow them to do so.
 	public GUIAddCourse()
 	{
 		setBounds(0, 0, 618, 434);
