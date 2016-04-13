@@ -11,14 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.TreeSet;
-=======
-import java.util.TreeSet;
 import java.util.function.Predicate;
->>>>>>> refs/remotes/origin/master
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -121,12 +119,9 @@ public class GUIAddRemoveCourse extends JPanel
 		/**
 		 * Creates a Table which shall display result of the course that user has searched for
 		 */
-<<<<<<< HEAD
-		table_1.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, }, new String[] { "CRN", "Class", "Capacity", "Remaining", "Teacher", "Days", "Time" })
-=======
 		searchTable = new JTable();
 		searchTable.setModel(new DefaultTableModel(getSearchResultTable(0), new String[] { "CRN", "Class", "Capacity", "Remaining", "Time", "Day", "Teacher", "Room" })
->>>>>>> refs/remotes/origin/master
+
 		{
 			@Override
 			public boolean isCellEditable(int row, int column)
@@ -134,9 +129,7 @@ public class GUIAddRemoveCourse extends JPanel
 				return false;
 			}
 		});
-<<<<<<< HEAD
-		scrollPane_1.setViewportView(table_1);
-=======
+
 		searchScrollPane.setViewportView(searchTable);
 
 		btnSearch = new JButton("Search");
@@ -168,7 +161,6 @@ public class GUIAddRemoveCourse extends JPanel
 			}
 		});
 		add(btnSearch);
->>>>>>> refs/remotes/origin/master
 
 		/**
 		 * Creates an another ScrollPane
@@ -226,7 +218,7 @@ public class GUIAddRemoveCourse extends JPanel
 		lblCourseRemoval.setBounds(177, 30, 243, 23);
 		add(lblCourseRemoval);
 
-<<<<<<< HEAD
+
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBounds(304, 81, 89, 23);
 		btnSearch.addActionListener(new ActionListener()
@@ -234,12 +226,13 @@ public class GUIAddRemoveCourse extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				AbstractButton textField = null;
 				CRNToSearch = Integer.parseInt(textField.getText());
 				courseSearchResult = new ArrayList<Course>();
 				for (Course c : StudentRegistrationMain.mainCourseManager.copyCourseOfferings())
 					if (c.getCRN() == CRNToSearch)
 						courseSearchResult.add(c);
-				table_1.setModel(new DefaultTableModel(new Object[][]{{null, null, null, null, null, null, null},{null, null, null, null, null, null, null}}, new String[] { "CRN", "Class", "Capacity", "Remaining", "Teacher", "Days", "Time" })
+				searchTable.setModel(new DefaultTableModel(new Object[][]{{null, null, null, null, null, null, null},{null, null, null, null, null, null, null}}, new String[] { "CRN", "Class", "Capacity", "Remaining", "Teacher", "Days", "Time" })
 				{
 					@Override
 					public boolean isCellEditable(int row, int column)
@@ -247,7 +240,8 @@ public class GUIAddRemoveCourse extends JPanel
 						return false;
 					}
 				});
-				scrollPane_1.setViewportView(table_1);
+				JScrollPane scrollPane_1 = null;
+				scrollPane_1.setViewportView(searchTable);
 				revalidate();
 				repaint();
 			}
@@ -282,8 +276,7 @@ public class GUIAddRemoveCourse extends JPanel
 		}
 		System.out.println("debug");
 		return new Object[][] { { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, };
-=======
-	}
+}
 
 	/**
 	 * @return a two-dimensional object array for the table with properly pre-filled info
@@ -319,6 +312,6 @@ public class GUIAddRemoveCourse extends JPanel
 		}
 
 		return cells;
->>>>>>> refs/remotes/origin/master
+
 	}
 }// end of JPanel extension of GUIAddorRemoveCourse()
